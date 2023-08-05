@@ -1,3 +1,5 @@
+// 3955번 = 캔디 분배
+
 #include <iostream>
 #include <vector>
 
