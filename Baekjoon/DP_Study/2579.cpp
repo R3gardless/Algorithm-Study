@@ -35,3 +35,5 @@ int main() {
     return 0;
 
 }
+
+// dp[i] = max(DP[i-3] + step[i-1], DP[i-2]) + step[i]
