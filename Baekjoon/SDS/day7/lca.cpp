@@ -21,7 +21,7 @@ void MakeTreeDFS(int curr) { // 주어진 정보를 바탕으로 트리를 한 �
             parent[next][0] = curr;
             depth[next] = depth[curr] + 1;
             MakeTreeDFS(next);
-        }
+        }       
     }
 }
 
