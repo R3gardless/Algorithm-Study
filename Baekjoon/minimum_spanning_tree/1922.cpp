@@ -1,3 +1,5 @@
+// 1922번 = 네트워크 연결
+
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -30,7 +32,7 @@ int main() {
         arr[a].push_back({b, c});
     }
 
-    pq.push(pii(1, 0)); // 초기 node 설정 
+    pq.push(pii(1, 0));
 
     while(cnt < N) {
         int u = pq.top().first;
