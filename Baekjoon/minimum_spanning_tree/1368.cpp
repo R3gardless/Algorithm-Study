@@ -1,76 +1,64 @@
 // 1368번 = 물대기
 
 #include <iostream>
-#include <tuple>
-#include <algorithm>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
-typedef tuple<int, int, int> tp; // u, v, w;
-typedef long long ll;
+typedef pair<int, int> pii;
+const int MAX = 301;
 
-int N, W;
-int u, v, w;
-int p[301], cost[300];
-vector<tp> edge;
-ll ans;
+int N, M;
+vector<pair<int, int>> arr[MAX]; // arr[a] = (b , c) -> Node a 에 연결 (Node b, Weight c) 
+bool visited[MAX]; // visited[x] = component 에 x 노드 포함여부 확인
+int cnt, ans, w;
 
-bool compare(tp & e1, tp & e2) {
-    return get<2>(e1) < get<2>(e2);
-}
-
-int Find(int n) {
-    if(p[n] < 0) return n;
-    p[n] = Find(p[n]);
-    return p[n];
-}
-
-void Union(int a, int b) {
-    a = Find(a); b = Find(b);
-    if(a == b) return;
-    p[a] += p[b];
-    p[b] = a;
-}
-
+struct cmp {
+    bool operator()(pii a, pii b) {
+        return a.second > b.second; // 내림차순 정렬
+    };
+};
+priority_queue<pii, vector<pii>, cmp> pq;
 
 int main() {
-
-    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-
     cin >> N;
 
-    fill(p, p + N, -1);
-    for(int i = 0; i < N; ++i) {
-        cin >> cost[i];
+    // 우물은 0번 노드 고정
+    for(int b = 1; b <= N; ++b) {
+        cin >> w;
+        arr[0].push_back({b, w});
     }
 
+    pq.push(pii(0, 0));
+    
     for(int i = 1; i <= N; ++i) {
         for(int j = 1; j <= N; ++j) {
-            cin >> W;
+            cin >> w;
             if(i >= j) continue;
-            edge.push_back(tp(i, j, W));
+            arr[i].push_back({j ,w});
         }
     }
 
-    sort(cost, cost + N);
-    sort(edge.begin(), edge.end(), compare);
-    ans += cost[0];
-    
-    for(int i = 0; i < edge.size(); ++i) {
-        u = get<0>(edge[i]);
-        v = get<1>(edge[i]);
-        w = get<2>(edge[i]);
+    while(cnt < N) {
+        int u = pq.top().first;
+        int cost = pq.top().second;
+        pq.pop();
 
-        if(Find(u) == Find(v)) continue;
-        Union(u, v);
-        ans += w;
+        if(visited[u]) continue;
 
-        if(p[Find(u)] == -N) break;
+        cnt++;
+        ans += cost;
+        visited[u] = true;
 
+        for(int i = 0; i < arr[u].size(); ++i) {
+            if(visited[arr[u][i].first]) continue;
+            pq.push(arr[u][i]);
+        }
     }
 
     cout << ans << '\n';
 
     return 0;
+
 }
