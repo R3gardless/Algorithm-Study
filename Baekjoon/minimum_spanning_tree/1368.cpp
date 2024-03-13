@@ -37,14 +37,14 @@ int main() {
             cin >> w;
             if(i >= j) continue;
             arr[j].push_back({i, w});
+            arr[i].push_back({j ,w});
         }
     }
 
-    while(cnt < N) {
+    while(cnt <= N) {
         int u = pq.top().first;
         int cost = pq.top().second;
         pq.pop();
-
         if(visited[u]) continue;
 
         cnt++;
